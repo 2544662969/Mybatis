@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhjg.mybatis.mapper.CarMapper" >
+  <resultMap id="BaseResultMap" type="com.zhjg.mybatis.pojo.Car" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <!-- jdbcType要大写 -->
+    <result column="brand" property="brand" javaType="string" jdbcType="VARCHAR" />
+    <result column="type" property="type" javaType="string" jdbcType="VARCHAR" />
+    <result column="price" property="price" javaType="double" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <!-- resultMap和resultType不能同时出现 -->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="int">
+  	select * from car where id = #{id}
+  </select>
+  
+  <!-- collection指定集合的类型为list，拼成(,,,,)形式,item代表本次迭代获取的元素(或键值对中的值),index代表当前迭代的次数(或键值对中的键) -->
+  <select id="selectByIds" resultMap="BaseResultMap" parameterType="list">
+  	select * from car
+  		where id in
+  		<foreach item="item" index="index" collection="list" open="(" close=")" separator=",">
+  			#{item}
+  		</foreach>
+  </select>
+  
+  <!-- and连接test的判断, parameterType指定参数类型, 大于小于号的转义字符, 参数的模糊查询时用$代替# -->
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.zhjg.mybatis.condition.CarCondition">
+  	select * from car
+  	<if test="brand != null">
+  		where brand like '%${brand}%'
+  	</if>
+  	<if test="type != null">
+  		and type like '%${type}%'
+  	</if>
+  	<if test="highPrice != null and highPrice != 0">
+  		and price &lt; #{highPrice}
+  	</if>
+  	<if test="lowPrice != null">
+  		and price &gt; #{lowPrice}
+  	</if>
+  </select>
+  
+  <insert id="insert" parameterType="com.zhjg.mybatis.pojo.Car">
+  	insert into car (brand, type, price) values (#{brand}, #{type}, #{price})
+  </insert>
+  
+  <!-- 动态设置set关键字，并去掉后面多余的逗号，如果是where条件的话应该用prefixOverrides="and|or"来去掉前面的and或or关键字 -->
+  <!-- 所谓前后是指每个if子标签，要去掉子标签中开头的字符用prefixOverrides,结尾的用suffixOverrides -->
+  <update id="modify" parameterType="com.zhjg.mybatis.pojo.Car">
+  	update car
+  	<trim prefix="set" suffixOverrides=",">
+  		<if test="brand != null">brand = #{brand},</if>
+  		<if test="type != null">type = #{type},</if>
+  		<if test="price != null">price = #{price}</if>
+  	</trim>
+  	<if test="id != null">
+  		where id = #{id}
+  	</if>
+  </update>
+  
+  <delete id="delete" parameterType="int">
+  	delete from car where id = #{id};
+  </delete>
+  
+  <!-- 数组id批量删除记录 -->
+  <delete id="deleteCars">
+  	delete from car where id in
+  	<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </delete>
+  
+  <!-- 批量插入，构建insert into tableName values (.,.,.),(.,.,.)形式的sql -->
+  <insert id="insertCars" parameterType="list">
+  	insert into car (brand, type, price) values
+  	<foreach collection="list" item="item" index="index" separator=",">
+  		(#{item.brand}, #{item.type},#{item.price})
+  	</foreach>
+  </insert>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" >
+  	select * from car;
+  </select>
+  
+  <select id="getCounts" resultType="int">
+  	select count(1) from car;
+  </select>
+  
+</mapper>

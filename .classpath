@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="D:/apache-maven-3.2.3/repository/mysql/mysql-connector-java/5.1.25/mysql-connector-java-5.1.25.jar"/>
+	<classpathentry kind="lib" path="D:/apache-maven-3.2.3/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="D:/Java/pagehelper-4.2.1/jsqlparser-0.9.5.jar" sourcepath="D:/Java/pagehelper-4.2.1/jsqlparser-0.9.5-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/Java/pagehelper-4.2.1/jsqlparser-0.9.5-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Java/pagehelper-4.2.1/pagehelper-5.0.0-beta.jar" sourcepath="D:/Java/pagehelper-4.2.1/pagehelper-5.0.0-beta-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/Java/pagehelper-4.2.1/pagehelper-5.0.0-beta-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Java/mybatis-3.4.1/mybatis-3.4.1/mybatis-3.4.1/mybatis-3.4.1.jar" sourcepath="D:/Java/mybatis-3.4.1/mybatis-3-mybatis-3.4.1/mybatis-3-mybatis-3.4.1/src/main/java"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

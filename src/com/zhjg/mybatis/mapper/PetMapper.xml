@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhjg.mybatis.mapper.PetMapper" >
+  <!-- pet和person中都存在id,name属性,所以查询结果中id与name各有两列,mybatis在封装时会取第一个 -->
+  <!-- id, name, pid, id, name, age:1, mimi, 1, 1, zhangsan, 20 -->
+  <!-- 当给pet的name属性赋值时会取mimi,给person的name属性赋值时同样还是mimi,因为根据关联中配置,person指定的列也是name -->
+  <!-- 最终导致person的name属性与pet的name属性值相同 -->
+  <!-- 解决：通过给列起别名的方式来修改映射中的column配置以作区别 -->
+  <!-- 
+  <resultMap id="BaseResultMap" type="com.zhjg.mybatis.pojo.Pet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" javaType="string" jdbcType="VARCHAR" />
+    <association property="person" javaType="com.zhjg.mybatis.pojo.Person">
+    	<id column="id" property="id" javaType="int" jdbcType="INTEGER" />
+    	<result column="name" property="name" javaType="string" jdbcType="VARCHAR" />
+    	<result column="age" property="age" javaType="int" jdbcType="INTEGER"/>
+    </association>
+  </resultMap>
+  
+  <select id="selectById" parameterType="int" resultMap="BaseResultMap">
+  	select * from pet, person where pet.id = #{id} and pet.pid = person.id
+  </select>
+   -->
+  <resultMap id="BaseResultMap" type="com.zhjg.mybatis.pojo.Pet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <!-- jdbcType要大写 -->
+    <result column="name" property="name" javaType="string" jdbcType="VARCHAR" />
+    <!-- 自定义类型成员用association来映射 -->
+    <association property="person" javaType="com.zhjg.mybatis.pojo.Person">
+    	<id column="pid" property="id" javaType="int" jdbcType="INTEGER" />
+    	<result column="pname" property="name" javaType="string" jdbcType="VARCHAR" />
+    	<result column="age" property="age" javaType="int" jdbcType="INTEGER"/>
+    </association>
+  </resultMap>
+  
+  <select id="selectById" parameterType="int" resultMap="BaseResultMap">
+  	select pet.*, person.id pid, person.name pname, person.age from pet, person where pet.id = #{id} and pet.pid = person.id
+  </select>
+  
+  <select id="selectByPage" resultMap="BaseResultMap">
+  	select * from pet
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhjg.mybatis.mapper.PersonMapper">
+	<resultMap id="BaseResultMap" type="com.zhjg.mybatis.pojo.Person">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<!-- jdbcType要大写 -->
+		<result column="name" property="name" javaType="string" jdbcType="VARCHAR" />
+		<result column="age" property="age" javaType="int" jdbcType="INTEGER" />
+		<!-- 集合类型的成员用collection来映射,注意别名问题,使用ofType指定集合元素的类型 -->
+		<collection property="pets" ofType="com.zhjg.mybatis.pojo.Pet">
+			<id column="pid" property="id" />
+			<result column="pname" property="name" />
+		</collection>
+	</resultMap>
+
+	<select id="selectById" resultMap="BaseResultMap" parameterType="int">
+		select person.*, pet.id pid, pet.name pname from person, pet where
+		person.id = #{id} and person.id = pet.pid
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select person.*, pet.id pid, pet.name pname from person, pet where
+		person.id = pet.pid
+	</select>
+	
+	<select id="selectByPage" resultMap="BaseResultMap">
+		select * from person
+	</select>
+
+</mapper>

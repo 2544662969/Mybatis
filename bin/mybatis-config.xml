@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- ********************注意各个配置项的先后顺序******************** -->
+
+	<properties resource="db.properties">
+		<!-- 可以通过property标签直接指定属性 -->
+		<!-- <property name="name" value="value"/> -->
+	</properties>
+
+	<!-- 指定数据库的设置 -->
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+	</settings>
+
+	<!-- 指定SysUser的别名为sysUser,项目的任意地方都可以用sysUser代替SysUser的全包名 -->
+	<!-- <typeAliases> <typeAlias type="com.zhjg.mybatis.pojo.SysUser" alias="sysUser"/> 
+		</typeAliases> -->
+
+	<!-- 通过package指定包名，mybatis会自动扫描包下的类，如果有@Alias就采用注解指定的别名，否则将首字母小写作为类的别名 -->
+	<!-- <typeAliases> <package name="com.zhjg.mybatis.pojo"/> </typeAliases> -->
+
+	<!-- 类型处理器 -->
+	<!-- <typeHandlers> </typeHandlers> -->
+
+	<!-- 通过拦截Executor实现分页 -->
+	<!-- 
+	<plugins> <plugin interceptor="com.zhjg.mybatis.interceptor.PageExecutorInterceptor"> 
+		<property name="key" value="100"/> </plugin> 
+	</plugins>
+	 -->
+
+	<!-- 通过拦截StatementHandler实现分页 -->
+	<!-- -->
+	<plugins> 
+		<plugin interceptor="com.zhjg.mybatis.interceptor.PageStatementHandlerInterceptor" /> 
+	</plugins>
+ 	
+ 	
+ 	
+	<!-- 使用pageHelper实现分页 -->
+	<!-- <plugins>
+		com.github.pagehelper为PageHelper类所在包名
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			使用下面的方式配置参数，后面会有所有的参数介绍
+			<property name="param1" value="value1" />
+		</plugin>
+	</plugins> -->
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- 映射器 -->
+	<mappers>
+		<mapper resource="com/zhjg/mybatis/mapper/SysUserMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/SysRoleMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/SysMenuMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/UserRoleMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/RoleMenuMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/CarMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/PersonMapper.xml" />
+		<mapper resource="com/zhjg/mybatis/mapper/PetMapper.xml" />
+	</mappers>
+
+
+	<!-- 通过包名指定映射器 -->
+	<!-- <mappers> <package name="com.zhjg.mybatis.mapper"/> </mappers> -->
+
+</configuration>
